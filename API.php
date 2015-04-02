@@ -39,10 +39,33 @@ class API extends REST {
     }
   }
 
+  private function autocomplete() {
+    if ($this->get_request_method() == 'GET') {
+      $search = $this->_data['id'];
+      $search = '%' . $search . '%';
+      $rs = $this->_db->prepare('SELECT * FROM movies WHERE title LIKE ?;');
+      $rs->bind_param('s', $search);
+      $rs->execute();
+      $rs = $rs->get_result();
+
+      if ($rs->num_rows > 0) {
+        $return = array();
+
+        while ($line = $rs->fetch_assoc()) {
+          $return[] = $line;
+        }
+
+        $this->response($this->parse($return), 200);
+      }
+    }
+
+    $this->response('', 204);
+  }
+
   private function movies() {
     if ($this->get_request_method() == 'GET' && isset($this->_data['id'])) {
       $id = $this->_data['id'];
-      $rs = $this->query('SELECT id, title, link, created_at, updated_at FROM movies WHERE id = '.$id.';');
+      $rs = $this->query('SELECT * FROM movies WHERE id = '.$id.';');
 
       if ($rs->num_rows > 0) {
         $return = array();
@@ -54,7 +77,7 @@ class API extends REST {
         $this->response($this->parse($return), 200);
       }
     } else if ($this->get_request_method() == 'GET') {
-      $rs = $this->query('SELECT id, title, link, created_at, updated_at FROM movies;');
+      $rs = $this->query('SELECT * FROM movies;');
 
       if ($rs->num_rows > 0) {
         $return = array();
