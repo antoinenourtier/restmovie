@@ -1,6 +1,6 @@
 <?php
 require_once('REST.php');
-require_once('allocine_search.php');
+require_once('allocine.php');
 
 class API extends REST {
 
@@ -73,20 +73,20 @@ class API extends REST {
       $allocineResult = json_decode($result, true);
 
       if (is_array($allocineResult["feed"]["movie"])) {
-          $return = array();
-          foreach($allocineResult["feed"]["movie"] as $movie) {
-                  $movieFormated = array();
-                  $movieFormated['title'] = $movie["originalTitle"];
-                  $movieFormated['image'] = $movie["poster"]["href"];
-                  $movieFormated['link'] = $movie["link"][0]["href"];
-                  $movieFormated['actors'] = $movie["castingShort"]["actors"];
-                  $movieFormated['directors'] = $movie["castingShort"]["directors"];
+        $return = array();
+        foreach($allocineResult["feed"]["movie"] as $movie) {
+          $movieFormated = array();
+          $movieFormated['title'] = $movie["originalTitle"];
+          $movieFormated['picture'] = $movie["poster"]["href"];
+          $movieFormated['link'] = $movie["link"][0]["href"];
+          $movieFormated['actors'] = $movie["castingShort"]["actors"];
+          $movieFormated['directors'] = $movie["castingShort"]["directors"];
 
-                  $return[] = $movieFormated;
-          }
+          $return[] = $movieFormated;
+        }
       }
-      $this->response($this->parse($return), 200);
 
+      $this->response($this->parse($return), 200);
     }
 
     $this->response('', 204);
@@ -125,9 +125,16 @@ class API extends REST {
       $actors = $this->_data['actors'];
       $directors = $this->_data['directors'];
 
-      $this->query('INSERT INTO movies (title, link, actors, picture, directors, created_at, updated_at) VALUES ("'.$title.'", "'.$link.'", "'.$actors.'", "'.$picture.'", "'.$directors.'", NOW(), NOW());');
-      $return['content'] = 'Movie created';
-      $this->response($this->parse(array('movie' => $return)), 200);
+      $rs = $this->_db->prepare('INSERT INTO movies (title, link, actors, picture, directors) VALUES (?, ?, ?, ?, ?);');
+      $rs->bind_param('sssss', $title, $link, $actors, $picture, $directors);
+      $rs->execute();
+
+      $curl = curl_init('http://restmovie.dev/api/movies/' . $this->_db->insert_id);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      $return = curl_exec($curl);
+      curl_close($curl);
+
+      $this->response($this->parse($return), 200);
     }
 
     $this->response('', 204);

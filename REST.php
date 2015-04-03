@@ -24,7 +24,6 @@ class REST {
   private function inputs() {
     switch ($this->get_request_method()) {
       case 'POST':
-        echo var_dump($_REQUEST);
         $this->_data = $this->cleanInputs($_POST);
         break;
 
