@@ -134,7 +134,7 @@ class API extends REST {
       $return = curl_exec($curl);
       curl_close($curl);
 
-      $this->response($this->parse($return), 200);
+      $this->response($return, 200);
     }
 
     $this->response('', 204);
