@@ -4,8 +4,25 @@ html {
 
 body {
   min-height: 100%;
-  background-color: #333;
   font-family: 'Roboto', sans-serif;
+}
+
+.typeahead {
+  background-color: #b3c33a!important;
+  border-radius: 0px;
+}
+
+.tt-dropdown-menu {
+  border: 1px solid #b3c33a!important;
+  padding-left: 7%;
+  padding-top: 2%;
+  width: 100%;
+  color: #b3c33a;
+}
+
+.twitter-typeahead {
+  position: initial!important;
+  display: initial!important;
 }
 
 .title {
@@ -56,9 +73,9 @@ input {
   float: left;
   color: #63717f;
   padding-left: 45px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
 
   -webkit-transition: background .55s ease;
   -moz-transition: background .55s ease;
@@ -94,5 +111,5 @@ input {
 
 .container-1 input#search:hover, .container-1 input#search:focus, .container-1 input#search:active{
   outline:none;
-  background: #ffffff;
+  background: #E0E8A5;
 }
