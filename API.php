@@ -1,5 +1,6 @@
 <?php
 require_once('REST.php');
+require_once('allocine_search.php');
 
 class API extends REST {
 
@@ -62,6 +63,35 @@ class API extends REST {
     $this->response('', 204);
   }
 
+  private function allocine() {
+    if ($this->get_request_method() == 'GET') {
+      $search = $this->_data['id'];
+      $search = '%' . $search . '%';
+
+      $allocine = new Allocine('100043982026', '29d185d98c984a359e6e6f26a0474269');
+      $result = $allocine->search($search);
+      $allocineResult = json_decode($result, true);
+
+      if (is_array($allocineResult["feed"]["movie"])) {
+          $return = array();
+          foreach($allocineResult["feed"]["movie"] as $movie) {
+                  $movieFormated = array();
+                  $movieFormated['title'] = $movie["originalTitle"];
+                  $movieFormated['image'] = $movie["poster"]["href"];
+                  $movieFormated['link'] = $movie["link"][0]["href"];
+                  $movieFormated['actors'] = $movie["castingShort"]["actors"];
+                  $movieFormated['directors'] = $movie["castingShort"]["directors"];
+
+                  $return[] = $movieFormated;
+          }
+      }
+      $this->response($this->parse($return), 200);
+
+    }
+
+    $this->response('', 204);
+  }
+
   private function movies() {
     if ($this->get_request_method() == 'GET' && isset($this->_data['id'])) {
       $id = $this->_data['id'];
@@ -88,6 +118,16 @@ class API extends REST {
 
         $this->response($this->parse($return), 200);
       }
+    } else if ($this->get_request_method() == 'POST') {
+      $title = $this->_data['title'];
+      $link = $this->_data['link'];
+      $picture = $this->_data['picture'];
+      $actors = $this->_data['actors'];
+      $directors = $this->_data['directors'];
+
+      $this->query('INSERT INTO movies (title, link, actors, picture, directors, created_at, updated_at) VALUES ("'.$title.'", "'.$link.'", "'.$actors.'", "'.$picture.'", "'.$directors.'", NOW(), NOW());');
+      $return['content'] = 'Movie created';
+      $this->response($this->parse(array('movie' => $return)), 200);
     }
 
     $this->response('', 204);

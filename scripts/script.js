@@ -3,7 +3,7 @@ $(window).load(function() {
     datumTokenizer: function(m) {return m.title; },
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     prefetch: '/api/autocomplete',
-    remote: '/api/autocomplete/%QUERY'
+    remote: '/api/allocine/%QUERY'
   });
 
   movies.initialize();

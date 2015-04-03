@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ERROR | E_PARSE);
 class REST {
 
   protected $_content_type = 'application/json';
@@ -23,6 +24,7 @@ class REST {
   private function inputs() {
     switch ($this->get_request_method()) {
       case 'POST':
+        echo var_dump($_REQUEST);
         $this->_data = $this->cleanInputs($_POST);
         break;
 
