@@ -75,12 +75,16 @@ $(window).load(function() {
     }
   });
 
-
-  // typeahead config
-  var remoteData = new Bloodhound({
+  var allocineData = new Bloodhound({
     datumTokenizer: function(m) {return m.title; },
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: '/api/allocine/%QUERY'
+  });
+
+  var imdbData = new Bloodhound({
+    datumTokenizer: function(m) {return m.title; },
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    remote: '/api/imdbData/%QUERY'
   });
 
   var moviesData = new Bloodhound({
@@ -89,17 +93,25 @@ $(window).load(function() {
     remote: '/api/autocomplete/%QUERY'
   });
 
-  remoteData.initialize();
+  allocineData.initialize();
+  imdbData.initialize();
   moviesData.initialize();
 
   $('.typeahead').typeahead(null, {
     name: 'movies',
     displayKey: 'title',
-    source: remoteData.ttAdapter(),
+    source: allocineData.ttAdapter(),
     templates: {
       suggestion: Handlebars.compile('<div class="clearfix mbl"><img src="{{picture}}" class="picture pull-left mrm"><p class="h2 mtl">{{title}}</p></div>')
     }
   }, {
+    name: 'movies',
+    displayKey: 'title',
+    source: imdbData.ttAdapter(),
+    templates: {
+      suggestion: Handlebars.compile('<div class="clearfix mbl"><img src="{{picture}}" class="picture pull-left mrm"><p class="h2 mtl">{{title}}</p></div>')
+    }
+  },{
     name: 'movies',
     displayKey: 'title',
     source: moviesData.ttAdapter(),

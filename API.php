@@ -63,6 +63,27 @@ class API extends REST {
     $this->response('', 204);
   }
 
+  private function imdb(){
+
+    $search = urlencode($this->_data['id']);
+
+    $requestURL = "http://www.omdbapi.com/?t='.$search.'&r=json";
+
+    $result = file_get_contents($requestURL);
+    $imdbResults = json_decode($result, true);
+
+    $return = array();
+    $movieFormated = array();
+    $movieFormated['title'] = $imdbResults["Title"];
+    $movieFormated['picture'] = $imdbResults["Poster"];
+    $movieFormated['actors'] = $imdbResults["Actors"];
+    $movieFormated['directors'] = $imdbResults["Director"];
+
+    $return[] = $movieFormated;
+
+    $this->response($this->parse($return), 200);
+  }
+
   private function allocine() {
     if ($this->get_request_method() == 'GET') {
       $search = $this->_data['id'];
