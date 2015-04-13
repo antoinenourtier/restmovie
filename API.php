@@ -78,6 +78,7 @@ class API extends REST {
     $movieFormated['picture'] = empty($imdbResults['Poster']) ? 'http://placehold.it/262x350' : $imdbResults['Poster'];
     $movieFormated['actors'] = $imdbResults['Actors'];
     $movieFormated['directors'] = $imdbResults['Director'];
+    $movieFormated['remote_id'] = $imdbResults['imdbID'];
 
     $return[] = $movieFormated;
 
@@ -102,6 +103,7 @@ class API extends REST {
           $movieFormated['link'] = $movie['link'][0]['href'];
           $movieFormated['actors'] = $movie['castingShort']['actors'];
           $movieFormated['directors'] = $movie['castingShort']['directors'];
+          $movieFormated['remote_id'] = $movie['code'];
 
           $return[] = $movieFormated;
         }
@@ -152,9 +154,10 @@ class API extends REST {
       $picture = $this->_data['picture'];
       $actors = $this->_data['actors'];
       $directors = $this->_data['directors'];
+      $remote_id = $this->_data['remote_id'];
 
-      $rs = $this->_db->prepare('INSERT INTO movies (title, link, actors, picture, directors) VALUES (?, ?, ?, ?, ?);');
-      $rs->bind_param('sssss', $title, $link, $actors, $picture, $directors);
+      $rs = $this->_db->prepare('INSERT INTO movies (title, link, actors, picture, directors, remote_id) VALUES (?, ?, ?, ?, ?, ?);');
+      $rs->bind_param('ssssss', $title, $link, $actors, $picture, $directors, $remote_id);
       $rs->execute();
 
       $curl = curl_init('http://restmovie.dev/api/movies/' . $this->_db->insert_id);

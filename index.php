@@ -37,6 +37,7 @@
             <form class="movie-form" name="movie-form">
               <div class="form-group hidden">
                 <input type="text" name="id" class="form-control" id="id">
+                <input type="text" name="remote_id" class="form-control" id="remote_id">
               </div>
               <div class="form-group">
                 <label for="title">Titre</label>

@@ -7,12 +7,15 @@ CREATE TABLE movies (
   title VARCHAR(255),
   link VARCHAR(255),
   picture VARCHAR(255),
-  type VARCHAR(255),
+  remote_id VARCHAR(255),
   actors VARCHAR(255),
   directors VARCHAR(255),
   released_at DATETIME DEFAULT NOW(),
   created_at DATETIME DEFAULT NOW(),
-  updated_at DATETIME DEFAULT NOW()
+  updated_at DATETIME DEFAULT NOW(),
+
+CONSTRAINT
+  remote_id UNIQUE (remote_id)
 );
 
 INSERT INTO movies (title, link)

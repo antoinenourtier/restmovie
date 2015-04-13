@@ -8,7 +8,7 @@ body {
 }
 
 .max-height {
-  max-height: 313px;
+  min-height: 385px;
 }
 
 .picture {

@@ -52,6 +52,7 @@ $('body').on('click', '.movie', function() {
 
   var $form = $('.movie-form');
   $form.find('#id').val(movie.id);
+  $form.find('#remote_id').val(movie.remote_id);
   $form.find('#title').val(movie.title);
   $form.find('#link').val(movie.link);
   $form.find('#actors').val(movie.actors);
