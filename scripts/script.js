@@ -1,3 +1,6 @@
+var movies = [];
+
+// Handlebars helper to each over data
 Handlebars.registerHelper('each', function(context, options) {
   var ret = '';
 
@@ -8,18 +11,59 @@ Handlebars.registerHelper('each', function(context, options) {
   return ret;
 });
 
+// populate data
+var populate = function() {
+  var template = Handlebars.compile($('#movie-template').html());
+  var array = {};
+
+  array.movies = movies;
+  $('#movies').html(template(array));
+};
+
+// update function
+$('#btn-movie-form').on('click', function() {
+  var form = $('.movie-form').serialize();
+
+  $.ajax({
+    url: '/api/movies',
+    data: form,
+    type: 'PUT',
+    success: function(data) {
+      var idx = _(movies).map(function(m) { return m.id; }).indexOf($('#id').val());
+
+      movies.splice(idx, 1);
+      movies.push(data);
+
+      setTimeout(function() {
+        $('.modal').modal('hide');
+        populate();
+      }, 500);
+    }
+  });
+});
+
+// open modal
+$('body').on('click', '.movie', function() {
+  var id = $(this).data('id');
+
+  var movie = _(movies).find(function(m) {
+    return m.id == id;
+  });
+
+  var $form = $('.movie-form');
+  $form.find('#id').val(movie.id);
+  $form.find('#title').val(movie.title);
+  $form.find('#link').val(movie.link);
+  $form.find('#actors').val(movie.actors);
+  $form.find('#directors').val(movie.directors);
+  $form.find('#picture').val(movie.picture);
+  $form.find('#picture-preview').attr('src', movie.picture);
+
+  $('.modal').modal('show');
+});
+
 $(window).load(function() {
-  var movies = [];
-  var source = $('#movie-template').html();
-  var template = Handlebars.compile(source);
-
-  var populate = function() {
-    var array = {};
-    array.movies = movies;
-    var html = template(array);
-    $('#movies').html(html);
-  };
-
+  // populate data
   $.ajax({
     url: '/api/movies',
     type: 'GET',
@@ -32,6 +76,7 @@ $(window).load(function() {
   });
 
 
+  // typeahead config
   var remoteData = new Bloodhound({
     datumTokenizer: function(m) {return m.title; },
     queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -62,6 +107,7 @@ $(window).load(function() {
       suggestion: Handlebars.compile('<div class="clearfix mbl"><img src="{{picture}}" class="picture pull-left mrm"><p class="h2 mtl">{{title}} <small>(en local)</small></p></div>')
     }
   }).on('typeahead:selected', function (obj, data) {
+    // create action
     $.ajax({
       url: '/api/movies',
       data: data,

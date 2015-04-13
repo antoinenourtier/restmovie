@@ -135,6 +135,24 @@ class API extends REST {
       curl_close($curl);
 
       $this->response($return, 200);
+    } else if ($this->get_request_method() == 'PUT') {
+      $id = $this->_data['id'];
+      $title = $this->_data['title'];
+      $link = $this->_data['link'];
+      $picture = $this->_data['picture'];
+      $actors = $this->_data['actors'];
+      $directors = $this->_data['directors'];
+
+      $rs = $this->_db->prepare('UPDATE movies SET title = ?, link = ?, actors = ?, picture = ?, directors = ? WHERE id = ?;');
+      $rs->bind_param('sssssi', $title, $link, $actors, $picture, $directors, $id);
+      $rs->execute();
+
+      $curl = curl_init('http://restmovie.dev/api/movies/' . $id);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      $return = curl_exec($curl);
+      curl_close($curl);
+
+      $this->response($return, 200);
     }
 
     $this->response('', 204);
