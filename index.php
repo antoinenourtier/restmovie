@@ -16,15 +16,9 @@
       </div>
 
       <div class="row">
-        <div class="col-sm-8 col-sm-offset-2 mtxl">
+        <div class="col-sm-9 col-sm-offset-2 mtxl">
           <div class="search-container">
             <input class="col-md-12 col-xs-12 typeahead search" type="search" placeholder="Rechercher un film" />
-          </div>
-
-          <div class="search-button">
-            <button type="button" class="btn btn-default" aria-label="Left Align">
-              <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-            </button>
           </div>
         </div>
       </div>
@@ -85,7 +79,7 @@
     <script id="movie-template" type="text/x-handlebars-template">
       {{#each movies}}
         <div class="col-md-3 movie" data-id="{{id}}">
-          <img src="{{picture}}" class="max-width">
+          <img src="{{picture}}" class="max-width max-height pbl imgHover">
         </div>
       {{/each}}
     </script>

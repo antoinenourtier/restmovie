@@ -98,7 +98,7 @@ class API extends REST {
         foreach($allocineResult["feed"]["movie"] as $movie) {
           $movieFormated = array();
           $movieFormated['title'] = $movie["originalTitle"];
-          $movieFormated['picture'] = $movie["poster"]["href"];
+          $movieFormated['picture'] = empty($movie["poster"]["href"]) ? 'http://placehold.it/262x350' : $movie["poster"]["href"];
           $movieFormated['link'] = $movie["link"][0]["href"];
           $movieFormated['actors'] = $movie["castingShort"]["actors"];
           $movieFormated['directors'] = $movie["castingShort"]["directors"];
@@ -117,11 +117,14 @@ class API extends REST {
     if ($this->get_request_method() == 'GET' && isset($this->_data['id'])) {
       $id = $this->_data['id'];
       $rs = $this->query('SELECT * FROM movies WHERE id = '.$id.';');
-
       if ($rs->num_rows > 0) {
         $return = array();
 
         while ($line = $rs->fetch_assoc()) {
+          if (empty($line['picture'])) {
+            $line['picture'] = 'http://placehold.it/262x350';
+          }
+
           $return = $line;
         }
 
@@ -134,6 +137,10 @@ class API extends REST {
         $return = array();
 
         while ($line = $rs->fetch_assoc()) {
+          if (empty($line['picture'])) {
+            $line['picture'] = 'http://placehold.it/262x350';
+          }
+
           $return[] = $line;
         }
 

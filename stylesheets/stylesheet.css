@@ -1,9 +1,14 @@
 body {
+  background-color: #e74c3c;
   font-family: 'Roboto', sans-serif;
 }
 
 .max-width {
   width: 100%;
+}
+
+.max-height {
+  max-height: 350px;
 }
 
 .picture {
@@ -26,17 +31,28 @@ body {
   margin-right: 10px;
 }
 
+.pbl {
+  padding-bottom: 30px;
+}
+
 .typeahead {
-  background-color: #b3c33a!important;
+  /*background-color: #b3c33a!important;*/
   border-radius: 0px;
 }
 
 .tt-dropdown-menu {
-  border: 1px solid #b3c33a!important;
+  /*border: 1px solid #b3c33a!important;*/
+  background: white;
   padding-left: 7%;
   padding-top: 2%;
   width: 100%;
-  color: #b3c33a;
+  max-height: 500px;
+  overflow-y: scroll;
+  margin-top: -3px;
+}
+
+.imgHover:hover {
+  cursor: pointer;
 }
 
 .twitter-typeahead {
@@ -54,7 +70,7 @@ body {
 }
 
 header {
-  color: #b3c33a;
+  color: white;
 }
 
 .btn {
@@ -76,7 +92,7 @@ header {
 
 .search {
   height: 50px;
-  background: #b3c33a;
+  /*background: #b3c33a;*/
   border: none;
   font-size: 35px;
   float: left;
