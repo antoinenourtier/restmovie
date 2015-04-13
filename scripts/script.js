@@ -84,7 +84,7 @@ $(window).load(function() {
   var imdbData = new Bloodhound({
     datumTokenizer: function(m) {return m.title; },
     queryTokenizer: Bloodhound.tokenizers.whitespace,
-    remote: '/api/imdbData/%QUERY'
+    remote: '/api/imdb/%QUERY'
   });
 
   var moviesData = new Bloodhound({
@@ -102,14 +102,14 @@ $(window).load(function() {
     displayKey: 'title',
     source: allocineData.ttAdapter(),
     templates: {
-      suggestion: Handlebars.compile('<div class="clearfix"><img src="{{picture}}" class="picture pull-left mrm"><p class="h2 mtl">{{title}}</p></div>')
+      suggestion: Handlebars.compile('<div class="clearfix allocine"><img src="{{picture}}" class="picture pull-left mrm"><p class="h2 mtl">{{title}}</p></div>')
     }
   }, {
     name: 'movies',
     displayKey: 'title',
     source: imdbData.ttAdapter(),
     templates: {
-      suggestion: Handlebars.compile('<div class="clearfix"><img src="{{picture}}" class="picture pull-left mrm"><p class="h2 mtl">{{title}}</p></div>')
+      suggestion: Handlebars.compile('<div class="clearfix imdb"><img src="{{picture}}" class="picture pull-left mrm"><p class="h2 mtl">{{title}}</p></div>')
     }
   },{
     name: 'movies',
@@ -131,5 +131,5 @@ $(window).load(function() {
         }
       });
     }
-  });
+  }).off('blur');
 });

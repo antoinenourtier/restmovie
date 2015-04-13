@@ -63,7 +63,7 @@ class API extends REST {
     $this->response('', 204);
   }
 
-  private function imdb(){
+  private function imdb() {
 
     $search = urlencode($this->_data['id']);
 
@@ -75,9 +75,9 @@ class API extends REST {
     $return = array();
     $movieFormated = array();
     $movieFormated['title'] = $imdbResults["Title"];
-    $movieFormated['picture'] = $imdbResults["Poster"];
-    $movieFormated['actors'] = $imdbResults["Actors"];
-    $movieFormated['directors'] = $imdbResults["Director"];
+    $movieFormated['picture'] = empty($imdbResults['Poster']) ? 'http://placehold.it/262x350' : $imdbResults['Poster'];
+    $movieFormated['actors'] = $imdbResults['Actors'];
+    $movieFormated['directors'] = $imdbResults['Director'];
 
     $return[] = $movieFormated;
 
@@ -93,15 +93,15 @@ class API extends REST {
       $result = $allocine->search($search);
       $allocineResult = json_decode($result, true);
 
-      if (is_array($allocineResult["feed"]["movie"])) {
+      if (is_array($allocineResult['feed']['movie'])) {
         $return = array();
-        foreach($allocineResult["feed"]["movie"] as $movie) {
+        foreach($allocineResult['feed']['movie'] as $movie) {
           $movieFormated = array();
-          $movieFormated['title'] = $movie["originalTitle"];
-          $movieFormated['picture'] = empty($movie["poster"]["href"]) ? 'http://placehold.it/262x350' : $movie["poster"]["href"];
-          $movieFormated['link'] = $movie["link"][0]["href"];
-          $movieFormated['actors'] = $movie["castingShort"]["actors"];
-          $movieFormated['directors'] = $movie["castingShort"]["directors"];
+          $movieFormated['title'] = $movie['originalTitle'];
+          $movieFormated['picture'] = empty($movie['poster']['href']) ? 'http://placehold.it/262x350' : $movie['poster']['href'];
+          $movieFormated['link'] = $movie['link'][0]['href'];
+          $movieFormated['actors'] = $movie['castingShort']['actors'];
+          $movieFormated['directors'] = $movie['castingShort']['directors'];
 
           $return[] = $movieFormated;
         }
