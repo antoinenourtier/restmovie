@@ -102,21 +102,21 @@ $(window).load(function() {
     displayKey: 'title',
     source: allocineData.ttAdapter(),
     templates: {
-      suggestion: Handlebars.compile('<div class="clearfix mbl"><img src="{{picture}}" class="picture pull-left mrm"><p class="h2 mtl">{{title}}</p></div>')
+      suggestion: Handlebars.compile('<div class="clearfix"><img src="{{picture}}" class="picture pull-left mrm"><p class="h2 mtl">{{title}}</p></div>')
     }
   }, {
     name: 'movies',
     displayKey: 'title',
     source: imdbData.ttAdapter(),
     templates: {
-      suggestion: Handlebars.compile('<div class="clearfix mbl"><img src="{{picture}}" class="picture pull-left mrm"><p class="h2 mtl">{{title}}</p></div>')
+      suggestion: Handlebars.compile('<div class="clearfix"><img src="{{picture}}" class="picture pull-left mrm"><p class="h2 mtl">{{title}}</p></div>')
     }
   },{
     name: 'movies',
     displayKey: 'title',
     source: moviesData.ttAdapter(),
     templates: {
-      suggestion: Handlebars.compile('<div class="clearfix mbl"><img src="{{picture}}" class="picture pull-left mrm"><p class="h2 mtl">{{title}} <small>(en local)</small></p></div>')
+      suggestion: Handlebars.compile('<div class="clearfix"><img src="{{picture}}" class="picture pull-left mrm"><p class="h2 mtl">{{title}} <small>(en local)</small></p></div>')
     }
   }).on('typeahead:selected', function (obj, data) {
     if (!data.id) {
