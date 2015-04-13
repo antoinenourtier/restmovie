@@ -119,15 +119,17 @@ $(window).load(function() {
       suggestion: Handlebars.compile('<div class="clearfix mbl"><img src="{{picture}}" class="picture pull-left mrm"><p class="h2 mtl">{{title}} <small>(en local)</small></p></div>')
     }
   }).on('typeahead:selected', function (obj, data) {
-    // create action
-    $.ajax({
-      url: '/api/movies',
-      data: data,
-      type: 'POST',
-      success: function(data) {
-        movies.push(data);
-        populate();
-      }
-    });
+    if (!data.id) {
+      // create action
+      $.ajax({
+        url: '/api/movies',
+        data: data,
+        type: 'POST',
+        success: function(data) {
+          movies.push(data);
+          populate();
+        }
+      });
+    }
   });
 });

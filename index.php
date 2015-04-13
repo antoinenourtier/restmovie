@@ -78,8 +78,16 @@
 
     <script id="movie-template" type="text/x-handlebars-template">
       {{#each movies}}
-        <div class="col-md-3 movie" data-id="{{id}}">
-          <img src="{{picture}}" class="max-width max-height pbl imgHover">
+        <div class="col-md-3 movie max-height pbl" data-id="{{id}}">
+          <div class="pos-relative">
+            <img src="{{picture}}" class="max-width">
+
+            <div class="movie-details">
+              <h1>{{title}}</h1>
+              <p>Acteurs : {{actors}}</p>
+              <p>Directeurs : {{directors}}</p>
+            </div>
+          </div>
         </div>
       {{/each}}
     </script>
